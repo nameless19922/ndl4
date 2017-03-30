@@ -9,7 +9,7 @@ const
     args = process.argv.slice(2),
 
     app = {
-        main: () => {
+        main: args => {
             const
                 input = fs.createReadStream('input.txt'),
                 output = fs.createWriteStream('output.txt'),
@@ -48,7 +48,7 @@ const
 
         },
 
-        add: () => {
+        add: args => {
             const
                 rstream = new CustomStreams.Readable({
                     start: 1,
@@ -67,7 +67,7 @@ const
 
 
 if (args.length) {
-    app.hasOwnProperty(args[0]) ? app[args[0]]() : console.log('bad params: main or add');
+    app.hasOwnProperty(args[0]) ? app[args[0]](args) : console.log('bad params: main or add');
 } else {
     console.log('"node index" - help');
     console.log('"node index main <type>" - main task, <type>: first or second');
