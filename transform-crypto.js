@@ -8,13 +8,19 @@ module.exports = class TransfromCrypto extends Transform {
         options.objectMode = true;
 
         super(options);
+        
+        this.hash = crypto.createHash('md5');
     }
 
-    _transform(chunk, encoding, callback) {
-        let hash = chunk ? crypto.createHash('md5').update(chunk.toString()).digest('hex') : null;
-
-        this.push(hash);
-
-        callback();
+     _transform(chunk, encoding, callback) {
+         this.hash.update(chunk.toString());
+         
+         callback();
+     }
+    
+    _flush(callback) {  
+        this.push(this.hash.digest('hex'));
+        
+        callback(); 
     }
 }
